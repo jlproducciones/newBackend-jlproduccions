@@ -1,7 +1,41 @@
 import express from "express";
-import mysql from "mysql";
+
 import cors from "cors";
 import { Resend } from "resend";
+
+let mysql;
+if (parseInt(process.versions.node.split('.')[0]) >= 12) {
+    // Si estamos en Node.js 12 o superior, usamos la sintaxis de importación de ESM de forma dinámica
+    import('mysql').then(mysqlModule => {
+        mysql = mysqlModule.default;
+
+        // Aquí puedes colocar el código que usa 'mysql', ya que se ejecutará después de que 'mysql' esté disponible
+        // Ejemplo de uso:
+        const connection = mysql.createConnection({
+            host: "brbepiladuxmexzmujyr-mysql.services.clever-cloud.com",
+            user: "uc3svp3nb0xpwk2q",
+            password: "iqdscD6gQeGu8OgHueme",
+            database: "brbepiladuxmexzmujyr",
+            port: 3306
+        });
+    }).catch(error => {
+        console.error('Error al importar el módulo MySQL:', error);
+    });
+} else {
+    // En versiones anteriores de Node.js, usamos require
+    const mysqlModule = require('mysql');
+    mysql = mysqlModule;
+
+    // Aquí puedes colocar el código que usa 'mysql' de la misma manera que lo harías normalmente
+    // Ejemplo de uso:
+    const connection = mysql.createConnection({
+        host: "brbepiladuxmexzmujyr-mysql.services.clever-cloud.com",
+        user: "uc3svp3nb0xpwk2q",
+        password: "iqdscD6gQeGu8OgHueme",
+        database: "brbepiladuxmexzmujyr",
+        port: 3306
+    });
+}
 
 const app = express();
 const port = 4000;
