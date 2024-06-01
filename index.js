@@ -1,8 +1,8 @@
 import express from "express";
+import mysql from "mysql";
 import cors from "cors";
 import { Resend } from "resend";
 
-const mysql = require("mysql")
 const app = express();
 const port = 4000;
 
