@@ -1,3 +1,6 @@
+import { Resend } from "resend"
+
+
 const express = require("express")
 const app = express()
 const mysql = require("mysql")
@@ -9,7 +12,7 @@ const corsOptions = {
     allowedHeaders: ['Content-Type']
   };
   
-  const resend = require("resend")
+
 
   app.use(cors(corsOptions));
   app.use(express.json());
@@ -211,34 +214,62 @@ app.get("/getRegisters/:id", (req, res) => {
 
 // ENVIAR EMAILS ORM
 
-app.post("/sendMessage", (req, res) => {
+// CODIGO 1
+// app.post("/sendMessage", (req, res) => {
 
-    const {email, motive, message} = req.body
+//     const {email, motive, message} = req.body
 
-    const serverResend = new resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM")
+//     const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM")
 
 
-    const correctSendFunction = () => {serverResend.emails.send({
-        from: `${email}`,
-        to: 'jlproducciones96@gmail.com',
-        subject: `${motive}`,
-        html: `${message}`
-      });
-      }
+//     const correctSendFunction = () => {serverResend.emails.send({
+//         from: `${email}`,
+//         to: 'jlproducciones96@gmail.com',
+//         subject: `${motive}`,
+//         html: `${message}`
+//       });
+//       }
 
-const functionSend = (err, result) => {
-    if(err){
-        res.status(500).send("Error del servidor para envio de correo electronico " + err),
-        console.log("Error al enviar correo electronico")
-    }else{
-        correctSendFunction()
-    res.status(200).send("Correo electronico enviado correctamente")
+// const functionSend = (err, result) => {
+//     if(err){
+//         res.status(500).send("Error del servidor para envio de correo electronico " + err),
+//         console.log("Error al enviar correo electronico")
+//     }else{
+//         correctSendFunction()
+//     res.status(200).send("Correo electronico enviado correctamente")
+//     }
+// }
+
+// if(email && message && motive){
+// functionSend()}
+// else{
+//     return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico.");
+// }
+// })
+
+
+// CODIGO 2
+
+
+app.post("/sendMessage", async (req, res) => {
+    const { email, motive, message } = req.body;
+
+    const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
+
+    try {
+        // Enviar el correo electrónico de manera asíncrona
+        await serverResend.emails.send({
+            from: `${email}`,
+            to: 'jlproducciones96@gmail.com',
+            subject: `${motive}`,
+            html: `${message}`
+        });
+
+        // Si el correo se envía correctamente, responder con un código 200 y un mensaje
+        res.status(200).send("Correo electrónico enviado correctamente");
+    } catch (error) {
+        // Si ocurre algún error, responder con un código 500 y un mensaje de error
+        console.error("Error al enviar correo electrónico:", error);
+        res.status(500).send("Error del servidor para envío de correo electrónico: " + error.message);
     }
-}
-
-if(email && message && motive){
-functionSend()}
-else{
-    return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico.");
-}
-})
+}); 
