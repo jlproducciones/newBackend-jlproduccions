@@ -1,8 +1,9 @@
-import express from "express";
-import mysql from "mysql";
-import cors from "cors";
-import { Resend } from "resend";
 
+const sendMailFunction = require("./sendEmail/sendEmail")
+
+const express = require("express")
+const mysql = require("mysql")
+const cors = require("cors")
 const app = express();
 const port = 4000;
 
@@ -250,26 +251,23 @@ app.get("/getRegisters/:id", (req, res) => {
 
 // CODIGO 2
 
-
 app.post("/sendMessage", async (req, res) => {
     const { email, motive, message } = req.body;
 
-    const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
+    // Verificar si los datos necesarios están presentes
+    if (!email || !motive || !message) {
+        return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico.");
+    }
 
     try {
-        // Enviar el correo electrónico de manera asíncrona
-        await serverResend.emails.send({
-            from: `${email}`,
-            to: 'jlproducciones96@gmail.com',
-            subject: `${motive}`,
-            html: `${message}`
-        });
+        // Llamar a la función sendMailFunction para enviar el correo electrónico
+        await sendMailFunction(email, motive, message);
 
-        // Si el correo se envía correctamente, responder con un código 200 y un mensaje
+        // Responder con un mensaje de éxito
         res.status(200).send("Correo electrónico enviado correctamente");
     } catch (error) {
-        // Si ocurre algún error, responder con un código 500 y un mensaje de error
+        // Si ocurre algún error, responder con un mensaje de error
         console.error("Error al enviar correo electrónico:", error);
         res.status(500).send("Error del servidor para envío de correo electrónico: " + error.message);
     }
-}); 
+});
