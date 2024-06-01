@@ -1,6 +1,3 @@
-import { Resend } from "resend"
-
-
 const express = require("express")
 const app = express()
 const mysql = require("mysql")
@@ -11,7 +8,7 @@ const corsOptions = {
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type']
   };
-  
+const resend = require("resend")  
 
 
   app.use(cors(corsOptions));
@@ -254,7 +251,7 @@ app.get("/getRegisters/:id", (req, res) => {
 app.post("/sendMessage", async (req, res) => {
     const { email, motive, message } = req.body;
 
-    const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
+    const serverResend = new resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
 
     try {
         // Enviar el correo electrónico de manera asíncrona
