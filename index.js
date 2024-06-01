@@ -1,6 +1,9 @@
-
-const sendMailFunction = require("./sendEmail/sendEmail")
-
+let sendMailFunction;
+import("./sendEmail/sendEmail").then(module => {
+    sendMailFunction = module.sendMailFunction;
+}).catch(error => {
+    console.error("Error al cargar el módulo sendEmail:", error);
+});
 const express = require("express")
 const mysql = require("mysql")
 const cors = require("cors")
