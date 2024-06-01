@@ -3,6 +3,7 @@ import express from "express";
 import cors from "cors";
 import { Resend } from "resend";
 
+let connection;
 let mysql;
 if (parseInt(process.versions.node.split('.')[0]) >= 12) {
     // Si estamos en Node.js 12 o superior, usamos la sintaxis de importación de ESM de forma dinámica
