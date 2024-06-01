@@ -61,13 +61,13 @@ app.get("/", (req, res) => {
 })
 
 
-const connection = mysql.createConnection({
-    host: "brbepiladuxmexzmujyr-mysql.services.clever-cloud.com",
-    user: "uc3svp3nb0xpwk2q",
-    password: "iqdscD6gQeGu8OgHueme",
-    database: "brbepiladuxmexzmujyr",
-    port: 3306
-  });
+// const connection = mysql.createConnection({
+//     host: "brbepiladuxmexzmujyr-mysql.services.clever-cloud.com",
+//     user: "uc3svp3nb0xpwk2q",
+//     password: "iqdscD6gQeGu8OgHueme",
+//     database: "brbepiladuxmexzmujyr",
+//     port: 3306
+//   });
 
 
 
