@@ -1,14 +1,17 @@
-const express = require("express")
-const app = express()
-const mysql = require("mysql")
-const port = 4000
-const cors = require("cors")
+import { express } from "express";
+import { mysql } from "mysql";
+import { cors } from "cors";
+import { Resend } from "resend";
+
+const app = express();
+const port = 4000;
+
 const corsOptions = {
     origin: ['https://jlproducciones.github.io', 'https://jlproducciones.github.io/administrador'],
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type']
-  };
-const resend = require("resend")  
+};
+
 
 
   app.use(cors(corsOptions));
@@ -251,7 +254,7 @@ app.get("/getRegisters/:id", (req, res) => {
 app.post("/sendMessage", async (req, res) => {
     const { email, motive, message } = req.body;
 
-    const serverResend = new resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
+    const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
 
     try {
         // Enviar el correo electrónico de manera asíncrona
