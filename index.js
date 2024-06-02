@@ -1,6 +1,6 @@
 let sendMailFunction;
 
-import("./sendEmail/sendEmail.mjs")
+import("./sendEmail/sendEmail.js")
   .then(module => {
     sendMailFunction = module.sendMailFunction;
   })
