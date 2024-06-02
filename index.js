@@ -216,46 +216,77 @@ app.get("/getRegisters/:id", (req, res) => {
 
 });
 
+// ELIMINAR BANDA
+
+app.post("/deleteBand", (req, res) => {
+const { id } = req.body 
+const sql = "DELETE FROM bands WHERE id = ?"
+
+connection.query(sql, [id], (err, response) => {
+if(err){
+    res.status(500).send("error al eliminar banda " + err)
+console.log("error al eliminar banda")
+}
+else{
+    res.status(200).send("Banda eliminada correctamente")
+console.log("banda eliminada corrctamente")
+}
+})
+
+})
 
 
+// MODIFICAR BANDA
+
+
+app.post("/changeInBand", (req, res) => {
+    const { id, number, email } = req.body;
+  
+    // Verifica si se proporcionó un ID válido
+    if (!id) {
+      return res.status(400).send("El ID de la banda es requerido");
+    }
+  
+    // Verifica si se proporcionó al menos un campo para actualizar
+    if (!number && !email) {
+      return res.status(400).send("Se requiere al menos un campo para actualizar (number o email)");
+    }
+  
+    // Construye la consulta SQL para actualizar la banda
+    let sql = "UPDATE bands SET";
+    const values = [];
+    
+    if (number) {
+      sql += " number = ?";
+      values.push(number);
+    }
+  
+    if (email) {
+      if (number) sql += ",";
+      sql += " email = ?";
+      values.push(email);
+    }
+  
+    sql += " WHERE id = ?";
+    values.push(id);
+  
+    // Ejecuta la consulta SQL
+    connection.query(sql, values, (err, result) => {
+      if (err) {
+        console.error("Error al modificar la banda:", err);
+        res.status(500).send("Error al modificar la banda");
+      } else {
+        console.log("Banda modificada correctamente");
+        res.status(200).send("Banda modificada correctamente");
+      }
+    });
+  });
+
+
+  
 
 // ENVIAR EMAILS ORM
 
-// CODIGO 1
-// app.post("/sendMessage", (req, res) => {
-
-//     const {email, motive, message} = req.body
-
-//     const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM")
-
-
-//     const correctSendFunction = () => {serverResend.emails.send({
-//         from: `${email}`,
-//         to: 'jlproducciones96@gmail.com',
-//         subject: `${motive}`,
-//         html: `${message}`
-//       });
-//       }
-
-// const functionSend = (err, result) => {
-//     if(err){
-//         res.status(500).send("Error del servidor para envio de correo electronico " + err),
-//         console.log("Error al enviar correo electronico")
-//     }else{
-//         correctSendFunction()
-//     res.status(200).send("Correo electronico enviado correctamente")
-//     }
-// }
-
-// if(email && message && motive){
-// functionSend()}
-// else{
-//     return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico.");
-// }
-// })
-
-
-// CODIGO 2
 app.post("/sendMessage", async (req, res) => {
     const { email, motive, message } = req.body;
 
