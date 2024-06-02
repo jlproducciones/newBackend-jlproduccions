@@ -2,7 +2,7 @@ import { Resend } from "resend";
 
 const serverResend = new Resend("re_BBqbLVjN_7QjJ7J9nopq8jdbqPwctZQsM");
 
-export const sendMailFunction = async (email, motive, message) => {
+export const sendMailFunction = async (email, motive, message, callback) => {
     
     try {
         // Enviar el correo electrónico de manera asíncrona
@@ -13,11 +13,11 @@ export const sendMailFunction = async (email, motive, message) => {
             html: `${message}`
         });
 
-        // Si el correo se envía correctamente, responder con un código 200 y un mensaje
-        res.status(200).send("Correo electrónico enviado correctamente");
+        // Si el correo se envía correctamente, llamar a la función de devolución de llamada con un código 200 y un mensaje
+        callback(null, "Correo electrónico enviado correctamente");
     } catch (error) {
-        // Si ocurre algún error, responder con un código 500 y un mensaje de error
+        // Si ocurre algún error, llamar a la función de devolución de llamada con un código 500 y un mensaje de error
         console.error("Error al enviar correo electrónico:", error);
-        res.status(500).send("Error del servidor para envío de correo electrónico: " + error.message);
+        callback(error, "Error del servidor para envío de correo electrónico: " + error.message);
     }
 }

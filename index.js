@@ -256,7 +256,6 @@ app.get("/getRegisters/:id", (req, res) => {
 
 
 // CODIGO 2
-
 app.post("/sendMessage", async (req, res) => {
     const { email, motive, message } = req.body;
 
@@ -267,10 +266,15 @@ app.post("/sendMessage", async (req, res) => {
 
     try {
         // Llamar a la función sendMailFunction para enviar el correo electrónico
-        await sendMailFunction(email, motive, message);
-
-        // Responder con un mensaje de éxito
-        res.status(200).send("Correo electrónico enviado correctamente");
+        sendMailFunction(email, motive, message, (error, response) => {
+            if (error) {
+                // Si hay un error, responder con un código 500 y el mensaje de error
+                return res.status(500).send(response);
+            } else {
+                // Si se envía correctamente, responder con un código 200 y el mensaje de éxito
+                return res.status(200).send(response);
+            }
+        });
     } catch (error) {
         // Si ocurre algún error, responder con un mensaje de error
         console.error("Error al enviar correo electrónico:", error);
