@@ -292,7 +292,8 @@ app.post("/sendMessage", async (req, res) => {
 
     // Verificar si los datos necesarios están presentes
     if (!email || !motive || !message) {
-        return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico.");
+        return res.status(400).send("Faltan datos requeridos para enviar el correo electrónico."),
+    console.log("ffaltan datos requeridos");
     }
 
     try {
@@ -300,10 +301,12 @@ app.post("/sendMessage", async (req, res) => {
         sendMailFunction(email, motive, message, (error, response) => {
             if (error) {
                 // Si hay un error, responder con un código 500 y el mensaje de error
-                return res.status(500).send(response);
+                return res.status(500).send(response),
+                console.log("mensaje enviado correctamente " + response)
             } else {
                 // Si se envía correctamente, responder con un código 200 y el mensaje de éxito
-                return res.status(200).send(response);
+                return res.status(200).send(response),
+                console.log("correo enviado con exito" + response);
             }
         });
     } catch (error) {
