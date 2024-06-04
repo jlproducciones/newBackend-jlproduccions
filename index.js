@@ -218,24 +218,20 @@ app.get("/getRegisters/:id", (req, res) => {
 });
 
 // ELIMINAR BANDA
-
-app.post("/deleteBand", (req, res) => {
-const { id } = req.body 
-const sql = "DELETE FROM bands WHERE id = ?"
-
-connection.query(sql, [id], (err, response) => {
-if(err){
-    res.status(500).send("error al eliminar banda " + err)
-console.log("error al eliminar banda")
-}
-else{
-    res.status(200).send("Banda eliminada correctamente")
-console.log("banda eliminada corrctamente")
-}
-})
-
-})
-
+app.delete("/deleteBand", (req, res) => { // Cambiado a DELETE
+    const { id } = req.body;
+    const sql = "DELETE FROM bands WHERE id = ?";
+  
+    connection.query(sql, [id], (err, response) => {
+      if (err) {
+        res.status(500).send("error al eliminar banda " + err);
+        console.log("error al eliminar banda");
+      } else {
+        res.status(200).send("Banda eliminada correctamente");
+        console.log("banda eliminada correctamente");
+      }
+    });
+  });
 
 // MODIFICAR BANDA
 
