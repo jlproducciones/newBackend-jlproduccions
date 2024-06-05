@@ -218,8 +218,8 @@ app.get("/getRegisters/:id", (req, res) => {
 });
 
 // ELIMINAR BANDA
-app.delete("/deleteBand", (req, res) => { // Cambiado a DELETE
-    const { id } = req.params.id;
+app.delete("/deleteBand/:id", (req, res) => { // Cambiado a DELETE
+    const id = req.params.id
     const sql = "DELETE FROM bands WHERE id = ?";
   
     connection.query(sql, [id], (err, response) => {
