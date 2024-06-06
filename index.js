@@ -236,9 +236,9 @@ app.delete("/deleteBand/:id", (req, res) => { // Cambiado a DELETE
 // MODIFICAR BANDA
 
 
-app.post("/changeInBand", (req, res) => {
-    const { id, number, email } = req.body;
-  
+app.post("/changeInBand/:id", (req, res) => {
+    const {number, email } = req.body;
+    const { id } = req.params;
     // Verifica si se proporcionó un ID válido
     if (!id) {
       return res.status(400).send("El ID de la banda es requerido");
