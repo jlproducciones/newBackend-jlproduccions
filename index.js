@@ -240,6 +240,7 @@ app.post("/changeInBand/number/:id", (req, res) => {
   const { number } = req.body;
   const { id } = req.params;
   const values = [number, id]; // Define 'values' con los valores a utilizar en la consulta SQL
+  console.log("esto esta llegando al backend" + values)
   const sql = 'UPDATE bands SET number = ? WHERE id = ?'; // Corrige la consulta SQL
   // Ejecuta la consulta SQL
   connection.query(sql, values, (err, result) => {
@@ -257,6 +258,7 @@ app.post("/changeInBand/email/:id", (req, res) => {
 const { email } = req.body;
 const { id } = req.params;
 const values = [email, id]; // Define 'values' con los valores a utilizar en la consulta SQL
+console.log("esto esta llegando al backend" + values)
 const sql = 'UPDATE bands SET email = ? WHERE id = ?'; // Corrige la consulta SQL
 // Ejecuta la consulta SQL
 connection.query(sql, values, (err, result) => {
@@ -278,6 +280,7 @@ if (!id) {
 }
 const values = [number, email, id]; // Define 'values' con los valores a utilizar en la consulta SQL
 const sql = 'UPDATE bands SET number = ?, email = ? WHERE id = ?'; // Corrige la consulta SQL
+console.log("esto esta llegando al backend" + values)
 // Ejecuta la consulta SQL
 connection.query(sql, values, (err, result) => {
   if (err) {
