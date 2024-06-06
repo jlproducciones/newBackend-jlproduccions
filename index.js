@@ -236,37 +236,10 @@ app.delete("/deleteBand/:id", (req, res) => { // Cambiado a DELETE
 // MODIFICAR BANDA
 
 
-app.post("/changeInBand/:id", (req, res) => {
-    const {number, email } = req.body;
+app.post("/changeInBand/number/:id", (req, res) => {
+    const { number } = req.body;
     const { id } = req.params;
-    // Verifica si se proporcionó un ID válido
-    if (!id) {
-      return res.status(400).send("El ID de la banda es requerido");
-    }
-  
-    // Verifica si se proporcionó al menos un campo para actualizar
-    if (!number && !email) {
-      return res.status(400).send("Se requiere al menos un campo para actualizar (number o email)");
-    }
-  
-    // Construye la consulta SQL para actualizar la banda
-    let sql = "UPDATE bands SET";
-    const values = [];
-    
-    if (number) {
-      sql += " number = ?";
-      values.push(number);
-    }
-  
-    if (email) {
-      if (number) sql += ",";
-      sql += " email = ?";
-      values.push(email);
-    }
-  
-    sql += " WHERE id = ?";
-    values.push(id);
-  
+  const sql = 'UPLOAD bands SET number = ? WHERE id = ?'
     // Ejecuta la consulta SQL
     connection.query(sql, values, (err, result) => {
       if (err) {
@@ -279,6 +252,49 @@ app.post("/changeInBand/:id", (req, res) => {
     });
   });
 
+  
+app.post("/changeInBand/email/:id", (req, res) => {
+  const { email } = req.body;
+  const { id } = req.params;
+
+  const sql = 'UPLOAD bands SET email = ? WHERE id = ?'
+  // Ejecuta la consulta SQL
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error al modificar la banda:", err);
+      res.status(500).send("Error al modificar la banda");
+    } else {
+      console.log("Banda modificada correctamente");
+      res.status(200).send("Banda modificada correctamente");
+    }
+  });
+});
+
+
+
+app.post("/changeInBand/numberandemail/:id", (req, res) => {
+  const {number, email } = req.body;
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).send("El ID de la banda es requerido");
+  }
+  
+
+  const sql = 'UPLOAD bands SET number = ? email = ? WHERE id = ?'
+  const values = [number, email, id];
+  
+  // Ejecutamos la consulta SQL
+  connection.query(sql, values, (err, result) => {
+    if (err) {
+      console.error("Error al modificar la banda:", err);
+      res.status(500).send("Error al modificar la banda");
+    } else {
+      console.log("Banda modificada correctamente");
+      res.status(200).send("Banda modificada correctamente");
+    }
+  });
+});
 
   
 
