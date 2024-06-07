@@ -161,9 +161,9 @@ connection.query(sql, (err, result) => {
 
 
 app.post("/sendRegisterBand", (req, res) => {
-    const { id, date, time } = req.body;
-    const sqlSelect = "SELECT date, time FROM bands WHERE id = ?";
-    const sqlUpdate = "UPDATE bands SET date = CONCAT(date, ?), time = CONCAT(time, ?) WHERE id = ?";
+    const { id, date, time, hour } = req.body;
+    const sqlSelect = "SELECT date, time, hour FROM bands WHERE id = ?";
+    const sqlUpdate = "UPDATE bands SET date = CONCAT(date, ?), time = CONCAT(time, ?), hour = CONCAT(hour, ?) WHERE id = ?";
   
     connection.query(sqlSelect, [id], (error, rows) => {
         if (error) {
@@ -180,11 +180,12 @@ app.post("/sendRegisterBand", (req, res) => {
 
         const current_date = rows[0].date || ""; // Si no hay valor, establece un valor vacío
         const current_time = rows[0].time || ""; // Si no hay valor, establece un valor vacío
+        const current_hour = rows[0].hour || ""; // Si no hay valor, establece un valor vacío
 
         const new_date = current_date + date;
         const new_time = current_time + time;
-
-        connection.query(sqlUpdate, [new_date, new_time, id], (error, result) => {
+        const new_hour = current_hour + hour;
+        connection.query(sqlUpdate, [new_date, new_time, new_hour, id], (error, result) => {
             if (error) {
                 console.log("Error al actualizar el registro: " + error);
                 res.status(500).send("Hubo un problema al actualizar el registro.");
